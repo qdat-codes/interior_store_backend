@@ -14,6 +14,7 @@ export const connectDB = async (): Promise<void> => {
     console.log("Connecting to MongoDB...");
     const conn = await mongoose.connect(mongoUri);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log("Connected to databse: ", mongoose.connection.name);
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
     process.exit(1);
