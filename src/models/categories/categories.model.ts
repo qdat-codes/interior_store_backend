@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { ProductCategoryType } from "../../types/index.type";
 
 const categorySchema = new Schema<ProductCategoryType>(
@@ -12,11 +12,14 @@ const categorySchema = new Schema<ProductCategoryType>(
     description: {
       type: String,
     },
-    image: [],
   },
   {
     timestamps: true,
   }
 );
 
-export default model<ProductCategoryType>("Categories", categorySchema);
+const CategoryModel = mongoose.model<ProductCategoryType>(
+  "Category",
+  categorySchema
+);
+export default CategoryModel;

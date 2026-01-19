@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { CartType } from "../../types/index.type";
 
 const cartSchema = new Schema<CartType>(
@@ -31,4 +31,5 @@ const cartSchema = new Schema<CartType>(
   }
 );
 
-export default model<CartType>("Cart", cartSchema);
+const CartModel = mongoose.model<CartType>("Cart", cartSchema);
+export default CartModel;

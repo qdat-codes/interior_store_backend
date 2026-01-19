@@ -5,5 +5,8 @@ export interface OrderItemsType extends Document {
   product: Types.ObjectId;
   quantity: number;
   price: number;
+  color: string;
+  size: string;
   subtotal: number;
+
 }

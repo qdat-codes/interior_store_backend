@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { OrderItemsType } from "../../types/index.type";
 
 const orderSchema = new Schema<OrderItemsType>(
@@ -32,4 +32,5 @@ const orderSchema = new Schema<OrderItemsType>(
   }
 );
 
-export default model<OrderItemsType>("OrderItem", orderSchema);
+const OrderItemModel = mongoose.model<OrderItemsType>("OrderItem", orderSchema);
+export default OrderItemModel;

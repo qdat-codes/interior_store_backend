@@ -1,0 +1,104 @@
+import { PipelineStage } from "mongoose";
+import CategoryModel from "../../models/categories/categories.model";
+import { ProductCategoryType } from "../../types/index.type";
+
+export const CategoryRepository = {
+  async getAllCategory(page: number = 1, limit: number = 10) {
+    try {
+      const skip = (page - 1) * limit;
+      const pipeline = [
+        {
+          $sort: { createAt: -1 },
+        },
+        {
+          $skip: skip,
+        },
+        { $limit: limit },
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            description: 1,
+          },
+        },
+      ] as PipelineStage[];
+
+      const allCategory = await CategoryModel.aggregate(pipeline);
+      return allCategory;
+    } catch (error) {
+      throw new Error("Error when get all category " + error);
+    }
+  },
+
+  async getCategoryByCondition(
+    condition: {
+      name?: string;
+    },
+    page: number = 1,
+    limit: number = 10
+  ) {
+    try {
+      const skip = (page - 1) * limit;
+
+      const pageCondition: any = {};
+      if (condition?.name) {
+        const search = condition.name.trim();
+        pageCondition.name = { $regex: search, option: "i" };
+      }
+
+      const pipeline = [
+        {
+          $match: pageCondition,
+        },
+        {
+          $sort: { createAt: -1 },
+        },
+        {
+          $skip: skip,
+        },
+        {
+          $limit: limit,
+        },
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            description: 1,
+          },
+        },
+      ] as PipelineStage[];
+
+      const product = await CategoryModel.aggregate(pipeline);
+      return product;
+    } catch (error) {
+      throw new Error("Error when get category by condition: " + error);
+    }
+  },
+
+  async createCategory(data: ProductCategoryType) {
+    try {
+      const newCategory = await CategoryModel.create(data);
+      return newCategory;
+    } catch (error) {
+      throw new Error("Error when create category: " + error);
+    }
+  },
+
+  async updateCategory(id: string, data: Partial<ProductCategoryType>) {
+    try {
+      const updateCategory = await CategoryModel.findByIdAndUpdate(id, data);
+      return updateCategory;
+    } catch (error) {
+      throw new Error("Error when update category: " + error);
+    }
+  },
+
+  async deleteCategory(id: string) {
+    try {
+      const deleteCategory = await CategoryModel.findByIdAndDelete(id);
+      return deleteCategory;
+    } catch (error) {
+      throw new Error("Error when delete category: " + error);
+    }
+  },
+};

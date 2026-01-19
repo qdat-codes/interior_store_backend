@@ -1,6 +1,7 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { UserType } from "../../types/index.type";
 import bcrypt from "bcrypt";
+import { USER_ROLE } from "../../contants/contant";
 
 const userSchema = new Schema<UserType>(
   {
@@ -19,8 +20,9 @@ const userSchema = new Schema<UserType>(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      required: true,
+      enum: Object.values(USER_ROLE),
+      default: USER_ROLE.USER,
     },
     phone: {
       type: String,
@@ -57,4 +59,5 @@ userSchema.methods.comparePassword = async function (
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-export default model<UserType>("User", userSchema);
+const UserModel = mongoose.model<UserType>("User", userSchema);
+export default UserModel;

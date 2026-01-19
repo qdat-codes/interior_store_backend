@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { ReviewType } from "../../types/index.type";
 
 const reviewSchema = new Schema<ReviewType>({
@@ -20,3 +20,6 @@ const reviewSchema = new Schema<ReviewType>({
     type: String,
   },
 });
+
+const ReviewModel = mongoose.model<ReviewType>("Review", reviewSchema);
+export default ReviewModel;

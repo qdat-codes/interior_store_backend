@@ -1,12 +1,18 @@
 import { Document, Types } from "mongoose";
 import { OrderItemsType } from "../index.type";
+import { PAYMENT_METHOD, PAYMENT_STATUS, ORDER_STATUS } from "../../contants/contant";
+
+export type PaymentMethod = (typeof PAYMENT_METHOD)[keyof typeof PAYMENT_METHOD];
+export type PaymentStatus = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS];
+export type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 
 export interface OrderType extends Document {
-  user: Types.ObjectId;
+  userId: Types.ObjectId;
   items: OrderItemsType[];
   totalAmount: number;
-  paymentMethod: "CASH" | "CARD";
-  paymentStatus: "PENDING" | "PAID" | "FAILED";
-  shippingAddress: string;
-  status: "PENDING" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  shippingAddress?: string;
+  status: OrderStatus;
+  note?: string
 }

@@ -1,5 +1,4 @@
 import { Document, Types } from "mongoose";
-import { ProductCategoryType } from "../index.type";
 
 export interface ProductType extends Document {
   name: string;
@@ -9,4 +8,12 @@ export interface ProductType extends Document {
   stock: number;
   discountPrice: number;
   description: string;
+  colors: string[];
+  sizes: string[];
+  overview: TOverviewSection[];
+
 }
+
+export type TOverviewRow = { label: string; value: string }
+export type TOverviewSection = { title: string; rows: TOverviewRow[] }
+

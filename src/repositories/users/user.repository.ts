@@ -6,7 +6,7 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "access_secret";
 const REFRESH_TOKEN_SECRET =
   process.env.REFRESH_TOKEN_SECRET || "refresh_secret";
 
-export const userService = {
+export const UserRepository = {
   async createUser(username: string, email: string, password: string) {
     const exist = await userModel.findOne({ email });
 

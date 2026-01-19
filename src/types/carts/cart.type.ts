@@ -9,5 +9,7 @@ export interface CartItemType {
   product: Types.ObjectId;
   quantity: number;
   price: number;
-  discountPrice: number;
+  discountPrice?: number;
+  color: string;
+  size: string;
 }
