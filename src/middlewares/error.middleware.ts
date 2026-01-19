@@ -6,9 +6,11 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.error("Error: ", err.message);
+  // Log full error for debugging
+  console.error("Error:", err);
   return res.status(err.status || 500).json({
     success: false,
-    message: err.message || "Interal Server Error",
+    message: err?.message || "Internal Server Error",
+    code: err?.code,
   });
 }

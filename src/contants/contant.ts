@@ -15,6 +15,12 @@ export const PAYMENT_METHOD = {
     DOMESTIC_BANK: "DOMESTIC_BANK",
 } as const
 
+export const SHIPPING_METHOD = {
+    FREE: "FREE",
+    STANDARD: "STANDARD",
+    EXPRESS: "EXPRESS",
+} as const
+
 export const PAYMENT_STATUS = {
     PENDING: "PENDING",
     PAID: "PAID",

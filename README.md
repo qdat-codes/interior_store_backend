@@ -61,6 +61,32 @@ npm run start
 
 Mặc định server chạy ở `http://localhost:3000` (hoặc theo `PORT`).
 
+### Swagger (OpenAPI)
+
+Dự án có Swagger UI để xem tài liệu API và test nhanh request/response.
+
+- **Swagger UI**: `http://localhost:3000/api-docs`
+- **OpenAPI JSON**: `http://localhost:3000/api-docs.json`
+
+Cấu hình liên quan:
+
+- `src/swagger.ts`: cấu hình OpenAPI + schemas dùng chung, và khai báo đường dẫn file để quét comment `@openapi`.
+- `src/index.ts`: mount Swagger UI vào `/api-docs` và expose JSON tại `/api-docs.json`.
+
+Viết tài liệu API:
+
+- Thêm comment dạng JSDoc `@openapi` ngay trên route (ví dụ: `src/routes/auth/auth.route.ts`).
+- Khi endpoint cần token, dùng:
+
+```yaml
+security:
+  - bearerAuth: []
+```
+
+Test endpoint protected:
+
+- Mở Swagger UI → bấm **Authorize** → nhập JWT (access token) → gọi thử API.
+
 ### Cấu trúc thư mục chính
 
 ```text

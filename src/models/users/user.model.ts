@@ -5,9 +5,11 @@ import { USER_ROLE } from "../../contants/contant";
 
 const userSchema = new Schema<UserType>(
   {
-    username: {
+    fisrtName: {
       type: String,
-      required: true,
+    },
+    lastName: {
+      type: String,
     },
     email: {
       type: String,
@@ -32,6 +34,10 @@ const userSchema = new Schema<UserType>(
     },
     avatar: {
       type: String,
+    },
+    favoriteProducts: {
+      type: [Schema.Types.ObjectId],
+      ref: "Product",
     },
     refreshToken: {
       type: String,

@@ -42,9 +42,9 @@ const productSchema = new Schema<ProductType>(
       min: 0,
       required: true,
     },
-    discountPrice: {
-      type: Number,
-      min: 0,
+    voucherId: {
+      type: Schema.Types.ObjectId,
+      ref: "Voucher",
     },
     description: {
       type: String,
@@ -60,6 +60,16 @@ const productSchema = new Schema<ProductType>(
     overview: {
       type: [OverviewSectionSchema],
       required: true,
+    },
+    rate: {
+      type: Number,
+      min: 0,
+      max: 5,
+      default: 0,
+    },
+    isWaterResistant: {
+      type: Boolean,
+      default: false,
     },
   },
   {

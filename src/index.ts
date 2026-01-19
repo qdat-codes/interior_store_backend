@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { connectDB } from "./config/database";
@@ -6,6 +6,8 @@ import authRoutes from "./routes/auth/auth.route";
 import productRoutes from "./routes/product/product.route";
 import { errorHandler } from "./middlewares/error.middleware";
 import { responseHanlder } from "./middlewares/response.middleware";
+import { swaggerSpec } from "./swagger";
+import swaggerUi from "swagger-ui-express";
 
 dotenv.config();
 
@@ -22,6 +24,10 @@ connectDB();
 
 // khai báo chi tiết các loại status
 app.use(responseHanlder);
+
+// Swagger
+app.get("/api-docs.json", (_req, res) => res.json(swaggerSpec)); 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec)); 
 
 // auth
 app.use("/api/auth", authRoutes);

@@ -5,13 +5,15 @@ export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export interface UserType extends Document {
   _id: Types.ObjectId;
-  username: string;
+  fisrtName?: string;
+  lastName?: string;
   email?: string;
   password: string;
   role: UserRole;
   address?: string;
   phone?: string;
   avatar?: string;
+  favoriteProducts?: Types.ObjectId[];
   refreshToken?: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
