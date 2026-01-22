@@ -17,10 +17,6 @@ export const connectDB = async (): Promise<void> => {
     console.log("Connected to databse: ", mongoose.connection.name);
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
-    // Không exit process trên serverless (Vercel) để function vẫn chạy được
-    // Chỉ exit trên local development
-    if (process.env.VERCEL !== "1" && process.env.NODE_ENV !== "production") {
-      process.exit(1);
-    }
+    process.exit(1);
   }
 };

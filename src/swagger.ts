@@ -20,21 +20,6 @@ const apis =
         ? [path.join(__dirname, "routes/**/*.js"), path.join(__dirname, "controllers/**/*.js")]
         : [path.join(__dirname, "routes/**/*.ts"), path.join(__dirname, "controllers/**/*.ts")];
 
-// Tự động detect server URL
-const getServerUrl = () => {
-    // Nếu có VERCEL_URL (Vercel tự động set biến này)
-    if (process.env.VERCEL_URL) {
-        return `https://${process.env.VERCEL_URL}`;
-    }
-    // Nếu có VERCEL (khi chạy trên Vercel)
-    if (process.env.VERCEL === "1") {
-        // Có thể set trong Vercel dashboard hoặc dùng default
-        return process.env.PRODUCTION_URL || "https://interior-store-backend.vercel.app";
-    }
-    // Local development
-    return "http://localhost:3009";
-};
-
 export const swaggerSpec = swaggerJSDoc({
     definition: {
         // Phiên bản chuẩn OpenAPI. (Swagger UI sẽ đọc JSON này)
@@ -44,7 +29,7 @@ export const swaggerSpec = swaggerJSDoc({
             version: "1.0.0",
         },
         // Danh sách server base URL để Swagger UI gọi thử API.
-        servers: [{ url: getServerUrl() }],
+        servers: [{ url: "http://localhost:3009" }],
         // Các component dùng lại được (security schemes, schemas, ...)
         components: {
             // Khai báo cơ chế auth dạng Bearer token để Swagger UI hiện nút "Authorize".
@@ -63,7 +48,7 @@ export const swaggerSpec = swaggerJSDoc({
                         code: { type: "string", example: "SUCCESS" },
                         message: { type: "string", example: "Success" },
                         status: { type: "number", example: 200 },
-                        data: {},
+                        data: { type: "null", example: null },
                     },
                     required: ["success", "code", "message", "status", "data"],
                 },
@@ -144,10 +129,6 @@ export const swaggerSpec = swaggerJSDoc({
                     properties: {
                         product: { type: "string", example: "64d2f..." },
                         quantity: { type: "number", example: 1 },
-                        price: { type: "number", example: 100000 },
-                        discountPrice: { type: "number", example: 100000 },
-                        color: { type: "string", example: "Red" },
-                        size: { type: "string", example: "S" },
                     },
                     required: ["product", "quantity", "price", "discountPrice", "color", "size"],
                 },
