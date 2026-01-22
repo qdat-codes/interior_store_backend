@@ -21,17 +21,29 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB (không block nếu fail trên serverless)
+connectDB().catch((error) => {
+  console.error("MongoDB connection error (non-blocking):", error);
+  // Không exit process trên serverless để app vẫn chạy được
+});
 
 // khai báo chi tiết các loại status
 app.use(responseHanlder);
 
 // Swagger - Custom HTML với CDN để hoạt động trên Vercel
-app.get("/api-docs.json", (_req, res) => res.json(swaggerSpec));
+app.get("/api-docs.json", (_req, res) => {
+  try {
+    res.json(swaggerSpec);
+  } catch (error) {
+    console.error("Error serving swagger spec:", error);
+    res.status(500).json({ error: "Failed to load API documentation" });
+  }
+});
 
 // Custom Swagger UI HTML với CDN
-const swaggerHtml = `
+let swaggerHtml: string;
+try {
+  swaggerHtml = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,9 +91,18 @@ const swaggerHtml = `
 </body>
 </html>
 `;
+} catch (error) {
+  console.error("Error generating swagger HTML:", error);
+  swaggerHtml = "<html><body><h1>Error loading API documentation</h1></body></html>";
+}
 
 app.get("/api-docs", (_req, res) => {
-  res.send(swaggerHtml);
+  try {
+    res.send(swaggerHtml);
+  } catch (error) {
+    console.error("Error serving swagger UI:", error);
+    res.status(500).send("<html><body><h1>Error loading API documentation</h1></body></html>");
+  }
 });
 
 // auth
