@@ -45,6 +45,7 @@ const productSchema = new Schema<ProductType>(
     voucherId: {
       type: Schema.Types.ObjectId,
       ref: "Voucher",
+      default: null,
     },
     description: {
       type: String,
@@ -59,7 +60,7 @@ const productSchema = new Schema<ProductType>(
     },
     overview: {
       type: [OverviewSectionSchema],
-      required: true,
+      default: null,
     },
     rate: {
       type: Number,

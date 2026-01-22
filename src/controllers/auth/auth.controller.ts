@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../../services/users/user.service";
 import { HttpError } from "../../utils/httpError";
+import validator from "validator";
 
 export const authController = {
   async register(req: Request, res: Response, next: NextFunction) {
@@ -9,6 +10,14 @@ export const authController = {
 
       if (!email || !password) {
         throw new HttpError(400, " email, password are required");
+      }
+
+      if (!validator.isEmail(email)) {
+        throw new HttpError(400, "email is not valid");
+      }
+
+      if (String(password).length < 6) {
+        throw new HttpError(400, "password must be at least 6 characters");
       }
 
       const user = await UserService.createUser(email, password);
@@ -52,6 +61,19 @@ export const authController = {
       const accessToken = await UserService.refreshToken(token);
       res.status(200).json(accessToken);
     } catch (error: any) {
+      next(error);
+    }
+  },
+
+  async logout(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { token } = req.body;
+      if (!token) {
+        throw new HttpError(400, "token is required");
+      }
+      const user = await UserService.logout(token);
+      res.status(200).json(user);
+    } catch (error) {
       next(error);
     }
   },

@@ -3,7 +3,7 @@ import { CartType } from "../../types/index.type";
 
 const cartSchema = new Schema<CartType>(
   {
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -22,6 +22,22 @@ const cartSchema = new Schema<CartType>(
           require: true,
           min: 1,
           default: 1,
+        },
+        price: {
+          type: Number,
+          require: true,
+        },
+        discountPrice: {
+          type: Number,
+          require: false,
+        },
+        color: {
+          type: String,
+          require: true,
+        },
+        size: {
+          type: String,
+          require: true,
         },
       },
     ],

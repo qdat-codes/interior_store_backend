@@ -1,8 +1,8 @@
 import { ProductService } from "../../services/products/product.service";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 export const ProductController = {
-  async getAllProduct(req: Request, res: Response) {
+  async getAllProduct(req: Request, res: Response, next: NextFunction) {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
@@ -17,15 +17,12 @@ export const ProductController = {
         "Lấy sản phẩm thành công",
         200
       );
-    } catch (error: any) {
-      console.error("Error in getAllProducts:", error.message);
-      return res.status(500).json({
-        message: error.message || "Failed to get all products",
-      });
+    } catch (error) {
+      next(error);
     }
   },
 
-  async getProductByCondition(req: Request, res: Response) {
+  async getProductBySearch(req: Request, res: Response, next: NextFunction) {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
@@ -38,7 +35,7 @@ export const ProductController = {
         maxPrice: maxPrice ? Number(maxPrice) : undefined,
       };
 
-      const result = await ProductService.getProductByCondition(
+      const result = await ProductService.getProductBySearch(
         condition,
         page,
         limit
@@ -47,31 +44,25 @@ export const ProductController = {
       return res.status(200).json({
         data: result,
       });
-    } catch (error: any) {
-      console.error("Error in get product by condition: ", error.message);
-      return res.status(500).json({
-        message: error.message || "Failed to get product",
-      });
+    } catch (error) {
+      next(error);
     }
   },
 
-  async createProduct(req: Request, res: Response) {
+  async createProduct(req: Request, res: Response, next: NextFunction) {
     try {
       const data = req.body;
 
-      const newProduct = ProductService.createProduct(data);
+      const newProduct = await ProductService.createProduct(data);
       return res.status(200).json({
         data: newProduct,
       });
-    } catch (error: any) {
-      console.error("Error in create product: ", error.message);
-      return res.status(500).json({
-        message: error.message || "Failed to create product",
-      });
+    } catch (error) {
+      next(error);
     }
   },
 
-  async updateProduct(req: Request, res: Response) {
+  async updateProduct(req: Request, res: Response, next: NextFunction) {
     try {
       const productId = req.params.id;
       const data = req.body;
@@ -80,26 +71,19 @@ export const ProductController = {
       return res.status(200).json({
         data: updatedProduct,
       });
-    } catch (error: any) {
-      console.error("Error in update product: ", error.message);
-      return res.status(500).json({
-        message: error.message || "Failed to update product",
-      });
+    } catch (error) {
+      next(error);
     }
   },
 
-  async deleteProduct(req: Request, res: Response) {
+  async deleteProduct(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
       const deleteProduct = await ProductService.deleteProduct(id);
       return res.status(200).json({
         data: deleteProduct,
       });
-    } catch (error: any) {
-      console.error("Error in delete product: ", error.message);
-      return res.status(500).json({
-        message: error.message || "Failed to delete product",
-      });
+    } catch (error) {
     }
   },
 };

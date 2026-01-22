@@ -24,13 +24,23 @@ export const CategoryRepository = {
       ] as PipelineStage[];
 
       const allCategory = await CategoryModel.aggregate(pipeline);
-      return allCategory;
+      const total = await CategoryModel.countDocuments();
+      const totalPages = Math.ceil(total / limit);
+      return {
+        data: allCategory,
+        pagination: {
+          total,
+          page,
+          totalPages,
+          limit,
+        },
+      };
     } catch (error) {
       throw new Error("Error when get all category " + error);
     }
   },
 
-  async getCategoryByCondition(
+  async getCategoryBySearch(
     condition: {
       name?: string;
     },
@@ -69,7 +79,17 @@ export const CategoryRepository = {
       ] as PipelineStage[];
 
       const product = await CategoryModel.aggregate(pipeline);
-      return product;
+      const total = await CategoryModel.countDocuments(pageCondition);
+      const totalPages = Math.ceil(total / limit);
+      return {
+        data: product,
+        pagination: {
+          total,
+          page,
+          totalPages,
+          limit,
+        },
+      };
     } catch (error) {
       throw new Error("Error when get category by condition: " + error);
     }
@@ -86,7 +106,8 @@ export const CategoryRepository = {
 
   async updateCategory(id: string, data: Partial<ProductCategoryType>) {
     try {
-      const updateCategory = await CategoryModel.findByIdAndUpdate(id, data);
+      const updateCategory = await CategoryModel.findByIdAndUpdate(id, data, { new: true });
+      if (!updateCategory) throw new Error("Category not found");
       return updateCategory;
     } catch (error) {
       throw new Error("Error when update category: " + error);
@@ -96,6 +117,7 @@ export const CategoryRepository = {
   async deleteCategory(id: string) {
     try {
       const deleteCategory = await CategoryModel.findByIdAndDelete(id);
+      if (!deleteCategory) throw new Error("Category not found");
       return deleteCategory;
     } catch (error) {
       throw new Error("Error when delete category: " + error);

@@ -2,10 +2,8 @@ import userModel from "../../models/users/user.model";
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwt";
 import jwt from "jsonwebtoken";
 import { HttpError } from "../../utils/httpError";
-
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "access_secret";
-const REFRESH_TOKEN_SECRET =
-  process.env.REFRESH_TOKEN_SECRET || "refresh_secret";
+import { REFRESH_TOKEN_SECRET } from "../../contants/contant";
+import { UserType } from "../../types/index.type";
 
 export const UserRepository = {
   async createUser(email: string, password: string) {
@@ -49,4 +47,127 @@ export const UserRepository = {
       throw new Error("Invalid refresh token");
     }
   },
-};
+
+  async logout(token: string) {
+    try {
+      const decoded = jwt.verify(token, REFRESH_TOKEN_SECRET) as {
+        userId: string;
+      };
+      const user = await userModel.findByIdAndUpdate(decoded.userId, { refreshToken: null });
+      return user;
+    } catch {
+      throw new Error("Invalid refresh token");
+    }
+  },
+
+
+  async getUserById(userId: string) {
+    try {
+      const user = await userModel.findById(userId);
+      return user;
+    } catch {
+      throw new Error("User not found");
+    }
+  },
+
+  async getUserBySearch(search: string, page: number = 1, limit: number = 10) {
+    try {
+      const skip = (page - 1) * limit;
+      const pageCondition: any = {};
+      if (search) {
+        pageCondition.$or = [{ email: { $regex: search, $options: "i" } }, { fisrtName: { $regex: search, $options: "i" } }, { lastName: { $regex: search, $options: "i" } }];
+      }
+      const user = await userModel.find(pageCondition).skip(skip).limit(limit);
+      const total = await userModel.countDocuments(pageCondition);
+      const totalPages = Math.ceil(total / limit);
+      return {
+        data: user,
+        pagination: {
+          total,
+          page,
+          totalPages,
+          limit,
+        },
+      };
+    } catch {
+      throw new Error("User not found");
+    }
+  },
+
+  async updateUser(userId: string, data: Partial<UserType>) {
+    try {
+      const user = await userModel.findByIdAndUpdate(userId, data, { new: true });
+      return user;
+    } catch {
+      throw new Error("User not found");
+    }
+  },
+
+  async deleteUser(userId: string) {
+    try {
+      const user = await userModel.findByIdAndDelete(userId);
+      return user;
+    } catch {
+      throw new Error("User not found");
+    }
+  },
+
+  async addFavoriteProduct(userId: string, productId: string) {
+    try {
+      const user = await userModel.findByIdAndUpdate(userId, { $push: { favoriteProducts: productId } }, { new: true });
+      return user;
+    } catch {
+      throw new Error("User not found");
+    }
+  },
+
+  async removeFavoriteProduct(userId: string, productId: string) {
+    try {
+      const user = await userModel.findByIdAndUpdate(userId, { $pull: { favoriteProducts: productId } }, { new: true });
+      return user;
+    } catch {
+      throw new Error("User not found");
+    }
+  },
+
+
+  async getAllFavoriteProduct(page: number = 1, limit: number = 10) {
+    try {
+      const allFavoriteProducts = await userModel.find();
+      const total = await userModel.countDocuments();
+      const totalPages = Math.ceil(total / limit);
+      return {
+        data: allFavoriteProducts,
+        pagination: {
+          total,
+          page,
+          totalPages,
+          limit,
+        },
+      };
+    } catch {
+      throw new Error("User not found");
+    }
+  },
+
+
+  async getAllUser(page: number = 1, limit: number = 10) {
+    try {
+      const skip = (page - 1) * limit;
+      const users = await userModel.find().skip(skip).limit(limit);
+      const total = await userModel.countDocuments();
+      const totalPages = Math.ceil(total / limit);
+      return {
+        data: users,
+        pagination: {
+          total,
+          page,
+          totalPages,
+          limit,
+        },
+      };
+    } catch {
+      throw new Error("User not found");
+    }
+  },
+}

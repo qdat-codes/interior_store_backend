@@ -11,7 +11,7 @@ export const CategoryService = {
     }
   },
 
-  async getCategoryByCondition(
+  async getCategoryBySearch(
     condition: {
       name?: string;
     },
@@ -19,7 +19,7 @@ export const CategoryService = {
     limit: number = 10
   ) {
     try {
-      const category = await CategoryRepository.getCategoryByCondition(
+      const category = await CategoryRepository.getCategoryBySearch(
         condition,
         page,
         limit

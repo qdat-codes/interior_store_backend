@@ -6,25 +6,68 @@ export const OrderRepository = {
     try {
       const skip = (page - 1) * limit;
       const allOrder = await OrderModel.find()
-        .populate("userId", "_id username email address phone avatar")
+        .populate("userId", "_id fisrtName lastName email address phone avatar")
+        .populate("items.product", "_id name price images")
         .sort({ createdAt: -1 })
         .skip(skip)
-        .limit(limit)
-        .select(
-          "items totalAmount paymentMethod paymentStatus shippingAddress status"
-        );
-      return allOrder;
+        .limit(limit);
+      const total = await OrderModel.countDocuments();
+      const totalPages = Math.ceil(total / limit);
+      return {
+        data: allOrder,
+        pagination: {
+          total,
+          page,
+          totalPages,
+          limit,
+        },
+      };
     } catch (error) {
       throw new Error("Failed when get all order: " + error);
     }
   },
 
-  async getOrderByCondition(
+  async getOrderById(orderId: string) {
+    try {
+      const order = await OrderModel.findById(orderId)
+        .populate("userId", "_id fisrtName lastName email address phone avatar")
+        .populate("items.product", "_id name price images");
+      return order;
+    } catch (error) {
+      throw new Error("Failed when get order by id: " + error);
+    }
+  },
+
+  async getOrderByUserId(userId: string, page: number = 1, limit: number = 10) {
+    try {
+      const skip = (page - 1) * limit;
+      const orders = await OrderModel.find({ userId })
+        .populate("items.product", "_id name price images")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
+      const total = await OrderModel.countDocuments({ userId });
+      const totalPages = Math.ceil(total / limit);
+      return {
+        data: orders,
+        pagination: {
+          total,
+          page,
+          totalPages,
+          limit,
+        },
+      };
+    } catch (error) {
+      throw new Error("Failed when get order by userId: " + error);
+    }
+  },
+
+  async getOrderBySearch(
     condition: {
-      items: OrderItemsType[];
-      paymenMethod: string;
-      paymentStatus: string;
-      shippingAddress: string;
+      paymentMethod?: string;
+      paymentStatus?: string;
+      status?: string;
+      shippingAddress?: string;
     },
     page: number = 1,
     limit: number = 10
@@ -32,36 +75,44 @@ export const OrderRepository = {
     try {
       const skip = (page - 1) * limit;
       const pageCondition: any = {};
-      if (condition?.items) {
-        pageCondition.items = condition.items;
-      }
 
-      if (condition?.paymenMethod) {
-        pageCondition.paymenMethod = condition.paymenMethod;
+      if (condition?.paymentMethod) {
+        pageCondition.paymentMethod = condition.paymentMethod;
       }
 
       if (condition?.paymentStatus) {
         pageCondition.paymentStatus = condition.paymentStatus;
       }
 
+      if (condition?.status) {
+        pageCondition.status = condition.status;
+      }
+
       if (condition?.shippingAddress) {
-        if (condition?.shippingAddress)
-          pageCondition.shippingAddress = {
-            $regex: condition.shippingAddress,
-            $options: "i",
-          };
+        pageCondition.shippingAddress = {
+          $regex: condition.shippingAddress,
+          $options: "i",
+        };
       }
 
       const order = await OrderModel.find(pageCondition)
-        .populate("userId", "_id username email address phone avatar")
-        .sort({ createdAt: -1 }) // sắp xếp theo thời gian tạo
+        .populate("userId", "_id fisrtName lastName email address phone avatar")
+        .populate("items.product", "_id name price images")
+        .sort({ createdAt: -1 })
         .skip(skip)
-        .limit(limit)
-        .select(
-          "items totalAmount paymentMethod paymentStatus shippingAddress status createdAt"
-        );
+        .limit(limit);
 
-      return order;
+      const total = await OrderModel.countDocuments(pageCondition);
+      const totalPages = Math.ceil(total / limit);
+      return {
+        data: order,
+        pagination: {
+          total,
+          page,
+          totalPages,
+          limit,
+        },
+      };
     } catch (error) {
       throw new Error("Failed when get order by condition: " + error);
     }
@@ -70,11 +121,13 @@ export const OrderRepository = {
   async createOrder(userId: string, data: OrderType) {
     try {
       if (!userId) throw new Error("Can't find userId");
-      const newOrder = await OrderModel.create(data);
+      const orderData = { ...data, userId };
+      const newOrder = await OrderModel.create(orderData);
       const populateOrder = await newOrder.populate(
         "userId",
-        "_id username email address phone avatar"
+        "_id fisrtName lastName email address phone avatar"
       );
+      await populateOrder.populate("items.product", "_id name price images");
       return populateOrder;
     } catch (error) {
       throw new Error("Failed when create order" + error);
@@ -83,7 +136,10 @@ export const OrderRepository = {
 
   async updateOrder(orderId: string, data: Partial<OrderType>) {
     try {
-      const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, data);
+      const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, data, { new: true })
+        .populate("userId", "_id fisrtName lastName email address phone avatar")
+        .populate("items.product", "_id name price images");
+      if (!updatedOrder) throw new Error("Order not found");
       return updatedOrder;
     } catch (error) {
       throw new Error("Failed when update order: " + error);

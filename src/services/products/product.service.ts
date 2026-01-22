@@ -11,7 +11,7 @@ export const ProductService = {
     }
   },
 
-  async getProductByCondition(
+  async getProductBySearch(
     condition: {
       name?: string;
       categoryId?: string;
@@ -22,7 +22,7 @@ export const ProductService = {
     limit: number = 10
   ) {
     try {
-      const product = await ProductRepository.getProductByCondition(
+      const product = await ProductRepository.getProductBySearch(
         condition,
         page,
         limit

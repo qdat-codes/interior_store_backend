@@ -1,88 +1,88 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { CategoryService } from "../../services/categories/category.service";
+import { HttpError } from "../../utils/httpError";
 
 export const CategoryController = {
-  async getAllCategory(req: Request, res: Response) {
+  async getAllCategory(req: Request, res: Response, next: NextFunction) {
     try {
-      const page = parseInt(req.params.page as string) || 1;
-      const limit = parseInt(req.params.limit as string) || 10;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
 
       const allCategory = await CategoryService.getAllCategory(page, limit);
-      return res.status(200).json(allCategory);
-    } catch (error: any) {
-      console.error("Error in get all category", error);
-      res
-        .status(500)
-        .json({ message: error.message || "Failed to get all categories" });
+      res.status(200).json(allCategory);
+    } catch (error) {
+      next(error);
     }
   },
 
-  async getCategoryByCondition(req: Request, res: Response) {
+  async getCategoryBySearch(req: Request, res: Response, next: NextFunction) {
     try {
-      const page = parseInt(req.params.page as string) || 1;
-      const limit = parseInt(req.params.limit as string) || 10;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const { search } = req.query;
 
-      const { condition } = req.body.condition;
-
-      const category = await CategoryService.getCategoryByCondition(
+      const condition = search ? { name: search as string } : {};
+      const category = await CategoryService.getCategoryBySearch(
         condition,
         page,
         limit
       );
 
-      return res.status(200).json(category);
-    } catch (error: any) {
-      console.error("Error in get category by condition", error);
-      res
-        .status(500)
-        .json({ message: error.message || "Failed to get category" });
+      res.status(200).json(category);
+    } catch (error) {
+      next(error);
     }
   },
 
-  async createNewCategory(req: Request, res: Response) {
+  async createNewCategory(req: Request, res: Response, next: NextFunction) {
     try {
       const data = req.body;
-      if (!data) throw new Error("Data can not empty");
+      if (!data || !data.name) {
+        throw new HttpError(400, "Name is required");
+      }
 
-      const newCategory = CategoryService.createCategory(data);
-      return res.status(200).json(newCategory);
-    } catch (error: any) {
-      console.error("Error in create new category", error);
-      res
-        .status(500)
-        .json({ message: error.message || "Failed to create new category" });
+      const newCategory = await CategoryService.createCategory(data);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      next(error);
     }
   },
 
-  async updateCategory(req: Request, res: Response) {
+  async updateCategory(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
-      if (!id) throw new Error("Cant find category");
+      if (!id) {
+        throw new HttpError(400, "Category ID is required");
+      }
       const data = req.body;
 
-      if (!data) throw new Error("Data can not empty");
-      const updateCategory = CategoryService.updateCategory(id, data);
-      return res.status(200).json(updateCategory);
-    } catch (error: any) {
-      console.error("Error in update  category", error);
-      res
-        .status(500)
-        .json({ message: error.message || "Failed to update category" });
+      if (!data) {
+        throw new HttpError(400, "Data cannot be empty");
+      }
+      const updateCategory = await CategoryService.updateCategory(id, data);
+      if (!updateCategory) {
+        throw new HttpError(404, "Category not found");
+      }
+      res.status(200).json(updateCategory);
+    } catch (error) {
+      next(error);
     }
   },
 
-  async deleteCategory(req: Request, res: Response) {
+  async deleteCategory(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
-      if (!id) throw new Error("Cant find category");
+      if (!id) {
+        throw new HttpError(400, "Category ID is required");
+      }
 
-      const deleteCategory = CategoryService.deleteCategory(id);
-      return res.status(200).json(deleteCategory);
-    } catch (error: any) {
-      console.error("Error in delete category", error);
-      res
-        .status(500)
-        .json({ message: error.message || "Failed to delete category" });
+      const deleteCategory = await CategoryService.deleteCategory(id);
+      if (!deleteCategory) {
+        throw new HttpError(404, "Category not found");
+      }
+      res.status(200).json(deleteCategory);
+    } catch (error) {
+      next(error);
     }
   },
 };

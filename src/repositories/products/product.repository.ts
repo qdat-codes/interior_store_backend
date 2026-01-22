@@ -6,53 +6,24 @@ export const ProductRepository = {
   async getAllProduct(page: number = 1, limit: number = 10) {
     try {
       const skip = (page - 1) * limit;
-      const pipeline = [
-        {
-          $lookup: {
-            from: "Category",
-            localField: "categoryId",
-            foreignField: "_id",
-            as: "category",
-          },
+      const allProduct = await ProductModel.find().skip(skip).limit(limit);
+      const total = await ProductModel.countDocuments();
+      const totalPages = Math.ceil(total / limit);
+      return {
+        data: allProduct,
+        pagination: {
+          total,
+          page,
+          totalPages,
+          limit,
         },
-        {
-          $unwind: "$category",
-        },
-        {
-          $sort: {
-            createAt: -1,
-          },
-        },
-        {
-          $skip: skip,
-        },
-        {
-          $limit: limit,
-        },
-        {
-          $project: {
-            name: 1,
-            price: 1,
-            discountPrice: 1,
-            stock: 1,
-            description: 1,
-            image: 1,
-            category: {
-              _id: "$category._id",
-              name: "$category.name",
-            },
-            createAt: 1,
-          },
-        },
-      ] as PipelineStage[];
-      const allProduct = await ProductModel.aggregate(pipeline);
-      return allProduct;
+      };
     } catch (error) {
       throw new Error("Failed when to get all product " + error);
     }
   },
 
-  async getProductByCondition(
+  async getProductBySearch(
     condition: {
       name?: string;
       categoryId?: string;

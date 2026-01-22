@@ -12,22 +12,41 @@ export const OrderService = {
     }
   },
 
-  async getOrderByCondition(
+  async getOrderById(orderId: string) {
+    try {
+      const order = await OrderRepository.getOrderById(orderId);
+      return order;
+    } catch (error) {
+      throw new Error("Failed when get order by id: " + error);
+    }
+  },
+
+  async getOrderByUserId(userId: string, page: number = 1, limit: number = 10) {
+    try {
+      const orders = await OrderRepository.getOrderByUserId(userId, page, limit);
+      return orders;
+    } catch (error) {
+      throw new Error("Failed when get order by userId: " + error);
+    }
+  },
+
+  async getOrderBySearch(
     condition: {
-      items: OrderItemsType[];
-      paymenMethod: string;
-      paymentStatus: string;
-      shippingAddress: string;
+      paymentMethod?: string;
+      paymentStatus?: string;
+      status?: string;
+      shippingAddress?: string;
     },
     page: number = 1,
     limit: number = 10
   ) {
     try {
-      const order = await OrderRepository.getOrderByCondition(
+      const order = await OrderRepository.getOrderBySearch(
         condition,
         page,
         limit
       );
+      
       return order;
     } catch (error) {
       throw new Error("Failed when get order by condition: " + error);

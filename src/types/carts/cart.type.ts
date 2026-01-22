@@ -1,7 +1,7 @@
 import { Types, Document } from "mongoose";
 
 export interface CartType extends Document {
-  user: Types.ObjectId;
+  userId: Types.ObjectId;
   items: CartItemType[];
 }
 
