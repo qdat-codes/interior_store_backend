@@ -20,6 +20,21 @@ const apis =
         ? [path.join(__dirname, "routes/**/*.js"), path.join(__dirname, "controllers/**/*.js")]
         : [path.join(__dirname, "routes/**/*.ts"), path.join(__dirname, "controllers/**/*.ts")];
 
+// Tự động detect server URL
+const getServerUrl = () => {
+    // Nếu có VERCEL_URL (Vercel tự động set biến này)
+    if (process.env.VERCEL_URL) {
+        return `https://${process.env.VERCEL_URL}`;
+    }
+    // Nếu có VERCEL (khi chạy trên Vercel)
+    if (process.env.VERCEL === "1") {
+        // Có thể set trong Vercel dashboard hoặc dùng default
+        return process.env.PRODUCTION_URL || "https://interior-store-backend.vercel.app";
+    }
+    // Local development
+    return "http://localhost:3009";
+};
+
 export const swaggerSpec = swaggerJSDoc({
     definition: {
         // Phiên bản chuẩn OpenAPI. (Swagger UI sẽ đọc JSON này)
@@ -29,7 +44,7 @@ export const swaggerSpec = swaggerJSDoc({
             version: "1.0.0",
         },
         // Danh sách server base URL để Swagger UI gọi thử API.
-        servers: [{ url: "http://localhost:3009" }],
+        servers: [{ url: getServerUrl() }],
         // Các component dùng lại được (security schemes, schemas, ...)
         components: {
             // Khai báo cơ chế auth dạng Bearer token để Swagger UI hiện nút "Authorize".
