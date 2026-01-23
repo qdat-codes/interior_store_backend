@@ -128,9 +128,13 @@ export const swaggerSpec = swaggerJSDoc({
                     type: "object",
                     properties: {
                         product: { type: "string", example: "64d2f..." },
-                        quantity: { type: "number", example: 1 },
+                        quantity: { type: "number", example: 1, minimum: 1 },
+                        price: { type: "number", example: 1200000 },
+                        discountPrice: { type: "number", example: 1000000 },
+                        color: { type: "string", example: "Red" },
+                        size: { type: "string", example: "L" },
                     },
-                    required: ["product", "quantity", "price", "discountPrice", "color", "size"],
+                    required: ["product", "quantity", "price", "color", "size"],
                 },
                 Category: {
                     type: "object",

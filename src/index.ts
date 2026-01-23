@@ -7,6 +7,8 @@ import productRoutes from "./routes/product/product.route";
 import categoryRoutes from "./routes/categories/category.route";
 import reviewRoutes from "./routes/review/review.route";
 import userRoutes from "./routes/user/user.route";
+import cartRoutes from "./routes/cart/cart.route";
+import orderRoutes from "./routes/order/order.route";
 import { errorHandler } from "./middlewares/error.middleware";
 import { responseHanlder } from "./middlewares/response.middleware";
 import { swaggerSpec } from "./swagger";
@@ -40,6 +42,10 @@ app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
 // category
 app.use("/api/category", categoryRoutes);
+// cart
+app.use("/api/cart", cartRoutes);
+// order
+app.use("/api/order", orderRoutes);
 // review
 app.use("/api/review", reviewRoutes);
 // middleware handle exception

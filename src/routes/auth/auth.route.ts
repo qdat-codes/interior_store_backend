@@ -1,6 +1,6 @@
 import express from "express";
 import { authController } from "../../controllers/auth/auth.controller";
-import { authMiddleware } from "../../middlewares/auth.middleware";
+
 /**
  * Router cho nhóm endpoint `/api/auth`.
  *
