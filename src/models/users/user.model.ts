@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { UserType } from "../../types/index.type";
 import bcrypt from "bcrypt";
 import { USER_ROLE } from "../../contants/contant";

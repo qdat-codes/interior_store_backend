@@ -7,7 +7,7 @@ export interface UserType extends Document {
   _id: Types.ObjectId;
   fisrtName?: string;
   lastName?: string;
-  email?: string;
+  email: string;
   password: string;
   role: UserRole;
   address?: string;
