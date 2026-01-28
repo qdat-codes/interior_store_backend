@@ -130,6 +130,7 @@ export const swaggerSpec = swaggerJSDoc({
                         _id: { type: "string", example: "64d2f..." },
                         firstName: { type: "string", example: "john_doe" },
                         lastName: { type: "string", example: "doe" },
+                        fullname: { type: "string", example: "john doe" },
                         email: { type: "string", example: "john.doe@example.com" },
                         password: { type: "string", example: "password" },
                         role: { type: "string", example: "admin" },
