@@ -30,6 +30,32 @@ export const swaggerSpec = swaggerJSDoc({
         },
         // Danh sách server base URL để Swagger UI gọi thử API.
         servers: [{ url: "http://localhost:3009" }],
+        // Định nghĩa thứ tự hiển thị các tags trong Swagger UI
+        // Thứ tự trong mảng này sẽ quyết định thứ tự hiển thị
+        tags: [
+            {
+                name: "auth",
+
+            },
+            {
+                name: "user",
+            },
+            {
+                name: "product",
+            },
+            {
+                name: "category",
+            },
+            {
+                name: "cart",
+            },
+            {
+                name: "order",
+            },
+            {
+                name: "review",
+            },
+        ],
         // Các component dùng lại được (security schemes, schemas, ...)
         components: {
             // Khai báo cơ chế auth dạng Bearer token để Swagger UI hiện nút "Authorize".
