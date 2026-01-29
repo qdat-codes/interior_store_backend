@@ -62,7 +62,7 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/", authMiddleware, OrderController.getAllOrder);
 
@@ -139,7 +139,7 @@ router.get("/", authMiddleware, OrderController.getAllOrder);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/search", authMiddleware, OrderController.getOrderBySearch);
 
@@ -193,7 +193,7 @@ router.get("/search", authMiddleware, OrderController.getOrderBySearch);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/me", authMiddleware, OrderController.getOrderByUserId);
 
@@ -225,19 +225,19 @@ router.get("/me", authMiddleware, OrderController.getOrderByUserId);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       404:
  *         description: Không tìm thấy đơn hàng
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/:orderId", authMiddleware, OrderController.getOrderById);
 
@@ -333,13 +333,13 @@ router.get("/:orderId", authMiddleware, OrderController.getOrderById);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.post("/", authMiddleware, OrderController.createOrder);
 
@@ -393,13 +393,13 @@ router.post("/", authMiddleware, OrderController.createOrder);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.patch("/:orderId", authMiddleware, OrderController.updateOrder);
 
@@ -425,19 +425,19 @@ router.patch("/:orderId", authMiddleware, OrderController.updateOrder);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiSuccess"
+ *               $ref: "#/components/schemas/SuccessReponse"
  *       400:
  *         description: Lỗi khi xóa đơn hàng
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.delete("/:orderId", authMiddleware, OrderController.deleteOrder);
 

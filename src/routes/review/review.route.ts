@@ -70,7 +70,7 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/", ReviewController.getAllReview);
 
@@ -102,7 +102,7 @@ router.get("/", ReviewController.getAllReview);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/product/:productId", ReviewController.getReviewByProductId);
 
@@ -164,7 +164,7 @@ router.get("/product/:productId", ReviewController.getReviewByProductId);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.post("/", authMiddleware, ReviewController.createReview);
 
@@ -212,7 +212,7 @@ router.post("/", authMiddleware, ReviewController.createReview);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.patch("/:reviewId", authMiddleware, ReviewController.updateReview);
 
@@ -238,13 +238,13 @@ router.patch("/:reviewId", authMiddleware, ReviewController.updateReview);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiSuccess"
+ *               $ref: "#/components/schemas/SuccessReponse"
  *       400:
  *         description: Lỗi khi xóa đánh giá
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.delete("/:reviewId", authMiddleware, ReviewController.deleteReview);
 

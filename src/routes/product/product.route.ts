@@ -367,7 +367,7 @@ router.post("/", authMiddleware, ProductController.createProduct);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 
 router.patch("/:id", authMiddleware, ProductController.updateProduct);
@@ -394,13 +394,13 @@ router.patch("/:id", authMiddleware, ProductController.updateProduct);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiSuccess"
+ *               $ref: "#/components/schemas/SuccessReponse"
  *       400:
  *         description: Lỗi khi xóa sản phẩm
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.delete("/:id", authMiddleware, ProductController.deleteProduct);
 

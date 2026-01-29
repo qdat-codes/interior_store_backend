@@ -150,7 +150,7 @@ router.get("/", CategoryController.getAllCategory);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/search", CategoryController.getCategoryBySearch);
 /**
@@ -191,13 +191,13 @@ router.get("/search", CategoryController.getCategoryBySearch);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.post("/", authMiddleware, CategoryController.createNewCategory);
 /**
@@ -245,19 +245,19 @@ router.post("/", authMiddleware, CategoryController.createNewCategory);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       404:
  *         description: Không tìm thấy danh mục
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.put("/:id", authMiddleware, CategoryController.updateCategory);
 /**
@@ -289,19 +289,19 @@ router.put("/:id", authMiddleware, CategoryController.updateCategory);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       404:
  *         description: Không tìm thấy danh mục
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.delete("/:id", authMiddleware, CategoryController.deleteCategory);
 

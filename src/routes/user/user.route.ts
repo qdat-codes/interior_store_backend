@@ -64,13 +64,13 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/", authMiddleware, UserController.getAllUser);
 
@@ -131,13 +131,13 @@ router.get("/", authMiddleware, UserController.getAllUser);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/search", authMiddleware, UserController.getUserBySearch);
 
@@ -162,13 +162,13 @@ router.get("/search", authMiddleware, UserController.getUserBySearch);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/me", authMiddleware, UserController.getUserById);
 
@@ -221,13 +221,13 @@ router.get("/me", authMiddleware, UserController.getUserById);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.patch("/me", authMiddleware, UserController.updateUser);
 
@@ -246,19 +246,19 @@ router.patch("/me", authMiddleware, UserController.updateUser);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiSuccess"
+ *               $ref: "#/components/schemas/SuccessReponse"
  *       400:
  *         description: Lỗi khi xóa tài khoản
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.delete("/me", authMiddleware, UserController.deleteUser);
 
@@ -312,13 +312,13 @@ router.delete("/me", authMiddleware, UserController.deleteUser);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.get("/favorites", authMiddleware, UserController.getAllFavoriteProduct);
 
@@ -351,13 +351,13 @@ router.get("/favorites", authMiddleware, UserController.getAllFavoriteProduct);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.post("/favorites/:productId", authMiddleware, UserController.addFavoriteProduct);
 
@@ -390,13 +390,13 @@ router.post("/favorites/:productId", authMiddleware, UserController.addFavoriteP
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  *       401:
  *         description: Không có quyền truy cập
  *         content:
  *           application/json:
  *             schema:
- *               $ref: "#/components/schemas/ApiError"
+ *               $ref: "#/components/schemas/ErrorReponse"
  */
 router.delete("/favorites/:productId", authMiddleware, UserController.removeFavoriteProduct);
 

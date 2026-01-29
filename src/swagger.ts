@@ -67,7 +67,7 @@ export const swaggerSpec = swaggerJSDoc({
                  * Schema phản hồi theo chuẩn middleware `res.success` / `res.error`
                  * (xem `src/middlewares/response.middleware.ts`).
                  */
-                ApiSuccess: {
+                SuccessReponse: {
                     type: "object",
                     properties: {
                         success: { type: "boolean", example: true },
@@ -78,7 +78,7 @@ export const swaggerSpec = swaggerJSDoc({
                     },
                     required: ["success", "code", "message", "status", "data"],
                 },
-                ApiError: {
+                ErrorReponse: {
                     type: "object",
                     properties: {
                         success: { type: "boolean", example: false },
