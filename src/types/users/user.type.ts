@@ -5,9 +5,7 @@ export type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export interface UserType extends Document {
   _id: Types.ObjectId;
-  fisrtName?: string;
-  lastName?: string;
-  fullName?: string;
+  username: string;
   email: string;
   password: string;
   role: UserRole;

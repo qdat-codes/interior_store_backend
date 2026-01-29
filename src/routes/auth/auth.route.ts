@@ -22,14 +22,20 @@ const router = express.Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required: [email, password]
+ *             required: [email, password, username]
  *             properties:
+ *               username:
+ *                 type: string
+ *                 example: "john_doe"
  *               email:
  *                 type: string
  *                 example: "admin@gmail.com"
  *               password:
  *                 type: string
  *                 example: "123456"
+ *               phone:
+ *                 type: string
+ *                 example: "0909090909"
  *     responses:
  *       200:
  *         description: Tạo user thành công
@@ -43,6 +49,8 @@ const router = express.Router();
  *                   type: object
  *                   properties:
  *                     _id:
+ *                       type: string
+ *                     username:
  *                       type: string
  *                     email:
  *                       type: string
@@ -65,6 +73,7 @@ const router = express.Router();
  *             example:
  *               user:
  *                 _id: "696e496fb435d4a77e5662c4"
+ *                 username: "john_doe"
  *                 email: "admin@gmail.com"
  *                 password: "$2b$10$PcdxDK/NNF1Dil1Smyq9hepJhf.qXyjVZTiIlzLiUO9onDNwB7YUy"
  *                 role: "USER"

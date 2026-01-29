@@ -5,14 +5,9 @@ import { USER_ROLE } from "../../contants/contant";
 
 const userSchema = new Schema<UserType>(
   {
-    fisrtName: {
+    username: {
       type: String,
-    },
-    lastName: {
-      type: String,
-    },
-    fullName: {
-      type: String
+      required: true,
     },
     email: {
       type: String,

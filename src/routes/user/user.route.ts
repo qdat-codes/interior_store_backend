@@ -80,7 +80,7 @@ router.get("/", authMiddleware, UserController.getAllUser);
  *   get:
  *     tags: [user]
  *     summary: Tìm kiếm người dùng
- *     description: Tìm kiếm người dùng theo email, firstName, lastName
+ *     description: Tìm kiếm người dùng theo email, username
  *     security:
  *       - bearerAuth: []
  *     parameters:

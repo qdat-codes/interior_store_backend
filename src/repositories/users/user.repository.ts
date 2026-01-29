@@ -6,11 +6,11 @@ import { REFRESH_TOKEN_SECRET } from "../../contants/contant";
 import { UserType } from "../../types/index.type";
 
 export const UserRepository = {
-  async createUser(email: string, password: string) {
+  async createUser(email: string, password: string, username: string) {
     const exist = await userModel.findOne({ email });
 
     if (exist) throw new HttpError(409, "Email already registered");
-    const user = new userModel({ email, password });
+    const user = new userModel({ email, password, username });
 
     await user.save();
     return user;

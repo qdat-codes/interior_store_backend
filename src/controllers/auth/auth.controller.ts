@@ -6,7 +6,7 @@ import validator from "validator";
 export const authController = {
   async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, password } = req.body;
+      const { email, password, username } = req.body;
 
       if (!email || !password) {
         throw new HttpError(400, " email, password are required");
@@ -16,11 +16,15 @@ export const authController = {
         throw new HttpError(400, "email is not valid");
       }
 
+      if (!username) {
+        throw new HttpError(400, "username is required");
+      }
+
       if (String(password).length < 6) {
         throw new HttpError(400, "password must be at least 6 characters");
       }
 
-      const user = await UserService.createUser(email, password);
+      const user = await UserService.createUser(email, password, username);
       res.status(201).json(user);
     } catch (error) {
       next(error);

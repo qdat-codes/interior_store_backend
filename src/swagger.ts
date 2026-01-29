@@ -106,12 +106,21 @@ export const swaggerSpec = swaggerJSDoc({
                     required: ["title", "rows"],
                 },
                 // Auth Schemas
-                SignupRequest: {
+                LoginRequest: {
                     type: "object",
                     required: ["email", "password"],
                     properties: {
-                        email: { type: "string", example: "admin@gmail.com", format: "email" },
-                        password: { type: "string", example: "123456", minLength: 6, description: "Password must be at least 6 characters" },
+                        email: { type: "string", example: "admin@gmail.com" },
+                        password: { type: "string", example: "123456" },
+                    },
+                },
+                LoginResponse: {
+                    type: "object",
+                    required: ["accessToken", "refreshToken", "user"],
+                    properties: {
+                        accessToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
+                        refreshToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
+                        user: { $ref: "#/components/schemas/User" },
                     },
                 },
                 SignupResponse: {
@@ -133,31 +142,12 @@ export const swaggerSpec = swaggerJSDoc({
                         },
                     },
                 },
-                LoginRequest: {
-                    type: "object",
-                    required: ["email", "password"],
-                    properties: {
-                        email: { type: "string", example: "admin@gmail.com" },
-                        password: { type: "string", example: "123456" },
-                    },
-                },
-                LoginResponse: {
-                    type: "object",
-                    required: ["accessToken", "refreshToken", "user"],
-                    properties: {
-                        accessToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
-                        refreshToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
-                        user: { $ref: "#/components/schemas/User" },
-                    },
-                },
                 // User Schemas
                 User: {
                     type: "object",
                     properties: {
                         _id: { type: "string", example: "64d2f..." },
-                        firstName: { type: "string", example: "john_doe" },
-                        lastName: { type: "string", example: "doe" },
-                        fullname: { type: "string", example: "john doe" },
+                        username: { type: "string", example: "john doe" },
                         email: { type: "string", example: "john.doe@example.com" },
                         password: { type: "string", example: "password" },
                         role: { type: "string", example: "admin" },
@@ -167,7 +157,7 @@ export const swaggerSpec = swaggerJSDoc({
                         favoriteProducts: { type: "array", items: { type: "string" }, example: ["64d2f...", "64d2f..."] },
                         refreshToken: { type: "string", example: "64d2f..." },
                     },
-                    required: ["firstName", "lastName", "email", "password", "role", "phone", "address", "avatar", "favoriteProducts", "refreshToken"],
+                    required: ["username", "email", "password", "role", "phone", "address", "avatar", "favoriteProducts", "refreshToken"],
                 },
                 CreateUserRequest: {
                     type: "object",
@@ -175,11 +165,7 @@ export const swaggerSpec = swaggerJSDoc({
                     properties: {
                         email: { type: "string", example: "user@example.com" },
                         password: { type: "string", example: "password123", minLength: 6, description: "Password must be at least 6 characters" },
-                        fisrtName: { type: "string", example: "John" },
-                        lastName: { type: "string", example: "Doe" },
                         phone: { type: "string", example: "0909090909" },
-                        address: { type: "string", example: "123 Main St" },
-                        avatar: { type: "string", example: "https://example.com/avatar.jpg" },
                         role: { type: "string", example: "USER", enum: ["USER", "ADMIN"] },
                     },
                 },
