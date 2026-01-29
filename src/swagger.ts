@@ -106,6 +106,33 @@ export const swaggerSpec = swaggerJSDoc({
                     required: ["title", "rows"],
                 },
                 // Auth Schemas
+                SignupRequest: {
+                    type: "object",
+                    required: ["email", "password"],
+                    properties: {
+                        email: { type: "string", example: "admin@gmail.com", format: "email" },
+                        password: { type: "string", example: "123456", minLength: 6, description: "Password must be at least 6 characters" },
+                    },
+                },
+                SignupResponse: {
+                    type: "object",
+                    required: ["user"],
+                    properties: {
+                        user: {
+                            type: "object",
+                            properties: {
+                                _id: { type: "string", example: "696e496fb435d4a77e5662c4" },
+                                email: { type: "string", example: "admin@gmail.com" },
+                                password: { type: "string", example: "$2b$10$PcdxDK/NNF1Dil1Smyq9hepJhf.qXyjVZTiIlzLiUO9onDNwB7YUy", description: "Hashed password" },
+                                role: { type: "string", example: "USER" },
+                                favoriteProducts: { type: "array", items: { type: "string" }, example: [] },
+                                createdAt: { type: "string", format: "date-time", example: "2026-01-19T15:10:39.561Z" },
+                                updatedAt: { type: "string", format: "date-time", example: "2026-01-19T15:10:39.561Z" },
+                                __v: { type: "number", example: 0 },
+                            },
+                        },
+                    },
+                },
                 LoginRequest: {
                     type: "object",
                     required: ["email", "password"],
