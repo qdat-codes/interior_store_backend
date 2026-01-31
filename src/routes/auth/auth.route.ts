@@ -26,7 +26,7 @@ const router = express.Router();
  *             properties:
  *               username:
  *                 type: string
- *                 example: "john_doe"
+ *                 example: "Phạm Quốc Đạt"
  *               email:
  *                 type: string
  *                 example: "admin@gmail.com"
@@ -70,10 +70,16 @@ const router = express.Router();
  *                       format: date-time
  *                     __v:
  *                       type: number
+ *                 accessToken:
+ *                   type: string
+ *                 refreshToken:
+ *                   type: string
  *             example:
+ *               accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *               refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *               user:
  *                 _id: "696e496fb435d4a77e5662c4"
- *                 username: "john_doe"
+ *                 username: "Phạm Quốc Đạt"
  *                 email: "admin@gmail.com"
  *                 password: "$2b$10$PcdxDK/NNF1Dil1Smyq9hepJhf.qXyjVZTiIlzLiUO9onDNwB7YUy"
  *                 role: "USER"
@@ -205,7 +211,7 @@ router.post("/login", authController.login);
  *       400:
  *         description: Token không hợp lệ
  */
-router.post("/refresh", authController.refresh);
+router.post("/refresh", authController.refreshToken);
 
 /**
  * @openapi

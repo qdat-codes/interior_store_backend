@@ -13,7 +13,12 @@ export const UserRepository = {
     const user = new userModel({ email, password, username });
 
     await user.save();
-    return user;
+
+    // Cấp token ngay sau khi tạo user (auto-login)
+    const accessToken = generateAccessToken(user._id.toString());
+    const refreshToken = generateRefreshToken(user._id.toString());
+
+    return { user, accessToken, refreshToken };
   },
 
   async login(email: string, password: string) {

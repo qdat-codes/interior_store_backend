@@ -4,8 +4,8 @@ import { UserType } from "../../types/index.type";
 export const UserService = {
   async createUser(email: string, password: string, username: string) {
     try {
-      const user = await UserRepository.createUser(email, password, username);
-      return user;
+      const result = await UserRepository.createUser(email, password, username);
+      return result;
     } catch (error) {
       throw error;
     }

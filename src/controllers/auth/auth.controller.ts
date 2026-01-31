@@ -24,8 +24,8 @@ export const authController = {
         throw new HttpError(400, "password must be at least 6 characters");
       }
 
-      const user = await UserService.createUser(email, password, username);
-      res.status(201).json(user);
+      const { user, accessToken, refreshToken } = await UserService.createUser(email, password, username);
+      res.status(201).json({ user, accessToken, refreshToken });
     } catch (error) {
       next(error);
     }
@@ -54,9 +54,9 @@ export const authController = {
     }
   },
 
-  async refresh(req: Request, res: Response, next: NextFunction) {
+  async refreshToken(req: Request, res: Response, next: NextFunction) {
     try {
-      const { token } = req.body;
+      const { token } = req.body; // refresh token
 
       if (!token) {
         throw new HttpError(400, "token is required");
