@@ -54,7 +54,11 @@ export const UserRepository = {
         userId: string;
       };
       const user = await userModel.findByIdAndUpdate(decoded.userId, { refreshToken: null });
-      return user;
+      return {
+        success: true,
+        message: "Logout successfully",
+        data: null,
+      };
     } catch {
       throw new Error("Invalid refresh token");
     }

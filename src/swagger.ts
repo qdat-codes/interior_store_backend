@@ -123,6 +123,34 @@ export const swaggerSpec = swaggerJSDoc({
                         user: { $ref: "#/components/schemas/User" },
                     },
                 },
+                RefreshTokenRequest: {
+                    type: "object",
+                    required: ["token"],
+                    properties: {
+                        token: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", description: "Refresh token" },
+                    },
+                },
+                RefreshTokenResponse: {
+                    type: "object",
+                    required: ["accessToken"],
+                    properties: {
+                        accessToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
+                    },
+                },
+                LogoutRequest: {
+                    type: "object",
+                    required: ["token"],
+                    properties: {
+                        token: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", description: "Refresh token" },
+                    },
+                },
+                LogoutResponse: {
+                    type: "object",
+                    description: "User object after logout (refreshToken will be cleared)",
+                    allOf: [
+                        { $ref: "#/components/schemas/User" }
+                    ],
+                },
                 SignupResponse: {
                     type: "object",
                     required: ["user"],
@@ -161,8 +189,9 @@ export const swaggerSpec = swaggerJSDoc({
                 },
                 CreateUserRequest: {
                     type: "object",
-                    required: ["email", "password"],
+                    required: ["username", "email", "password"],
                     properties: {
+                        username: { type: "string", example: "john_doe" },
                         email: { type: "string", example: "user@example.com" },
                         password: { type: "string", example: "password123", minLength: 6, description: "Password must be at least 6 characters" },
                         phone: { type: "string", example: "0909090909" },

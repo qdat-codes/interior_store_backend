@@ -71,7 +71,7 @@ export const authController = {
 
   async logout(req: Request, res: Response, next: NextFunction) {
     try {
-      const { token } = req.body;
+      const { token } = req.body; // refresh token
       if (!token) {
         throw new HttpError(400, "token is required");
       }
