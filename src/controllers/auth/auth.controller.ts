@@ -25,7 +25,14 @@ export const authController = {
       }
 
       const { user, accessToken, refreshToken } = await UserService.createUser(email, password, username);
-      res.status(201).json({ user, accessToken, refreshToken });
+      // set refresh token vào cookie
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true, // chỉ có thể truy cập thông qua HTTP (không thể truy cập thông qua JavaScript)
+        secure: process.env.NODE_ENV === "production", // chỉ có thể truy cập thông qua HTTPS trong môi trường production
+        sameSite: "lax", // chỉ có thể truy cập thông qua cùng domain
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+      res.status(201).json({ user, accessToken });
     } catch (error) {
       next(error);
     }
@@ -44,9 +51,16 @@ export const authController = {
         password
       );
 
+      // set refresh token vào cookie
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true, // chỉ có thể truy cập thông qua HTTP (không thể truy cập thông qua JavaScript)
+        secure: process.env.NODE_ENV === "production", // chỉ có thể truy cập thông qua HTTPS trong môi trường production
+        sameSite: "lax", // chỉ có thể truy cập thông qua cùng domain
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+
       res.status(200).json({
         accessToken,
-        refreshToken,
         user,
       });
     } catch (error) {
@@ -75,6 +89,10 @@ export const authController = {
       if (!token) {
         throw new HttpError(400, "token is required");
       }
+
+      // xóa refresh token khỏi cookie
+      res.clearCookie("refreshToken");
+      
       const user = await UserService.logout(token);
       res.status(200).json(user);
     } catch (error) {

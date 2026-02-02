@@ -38,12 +38,18 @@ const router = express.Router();
  *                 example: "0909090909"
  *     responses:
  *       200:
- *         description: Tạo user thành công
+ *         description: Tạo user thành công. refreshToken được lưu trong cookie (Set-Cookie header)
+ *         headers:
+ *           Set-Cookie:
+ *             description: refreshToken được set vào cookie với tên "refreshToken"
+ *             schema:
+ *               type: string
+ *               example: "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly; SameSite=Lax; Max-Age=604800"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               required: [user]
+ *               required: [user, accessToken]
  *               properties:
  *                 user:
  *                   type: object
@@ -72,11 +78,9 @@ const router = express.Router();
  *                       type: number
  *                 accessToken:
  *                   type: string
- *                 refreshToken:
- *                   type: string
+ *                   description: Access token để xác thực các request tiếp theo
  *             example:
  *               accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
- *               refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *               user:
  *                 _id: "696e496fb435d4a77e5662c4"
  *                 username: "Phạm Quốc Đạt"
@@ -126,17 +130,22 @@ router.post("/register", authController.register);
  *                 example: "123456"
  *     responses:
  *       200:
- *         description: Đăng nhập thành công
+ *         description: Đăng nhập thành công. refreshToken được lưu trong cookie (Set-Cookie header)
+ *         headers:
+ *           Set-Cookie:
+ *             description: refreshToken được set vào cookie với tên "refreshToken"
+ *             schema:
+ *               type: string
+ *               example: "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...; HttpOnly; SameSite=Lax; Max-Age=604800"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               required: [accessToken, refreshToken, user]
+ *               required: [accessToken, user]
  *               properties:
  *                 accessToken:
  *                   type: string
- *                 refreshToken:
- *                   type: string
+ *                   description: Access token để xác thực các request tiếp theo
  *                 user:
  *                   type: object
  *                   properties:
@@ -163,7 +172,6 @@ router.post("/register", authController.register);
  *                       type: number
  *             example:
  *               accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
- *               refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *               user:
  *                 _id: "696e496fb435d4a77e5662c4"
  *                 email: "admin@gmail.com"
@@ -232,7 +240,13 @@ router.post("/refresh", authController.refreshToken);
  *                 description: refreshToken
  *     responses:
  *       200:
- *         description: Logout thành công
+ *         description: Logout thành công. refreshToken cookie sẽ bị xóa
+ *         headers:
+ *           Set-Cookie:
+ *             description: refreshToken cookie được xóa (Max-Age=0)
+ *             schema:
+ *               type: string
+ *               example: "refreshToken=; HttpOnly; SameSite=Lax; Max-Age=0"
  *       400:
  *         description: Token không hợp lệ
  *         content:

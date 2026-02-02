@@ -116,12 +116,12 @@ export const swaggerSpec = swaggerJSDoc({
                 },
                 LoginResponse: {
                     type: "object",
-                    required: ["accessToken", "refreshToken", "user"],
+                    required: ["accessToken", "user"],
                     properties: {
                         accessToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
-                        refreshToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
                         user: { $ref: "#/components/schemas/User" },
                     },
+                    description: "refreshToken được lưu trong cookie (Set-Cookie header), không trả về trong response body",
                 },
                 RefreshTokenRequest: {
                     type: "object",
@@ -153,7 +153,7 @@ export const swaggerSpec = swaggerJSDoc({
                 },
                 SignupResponse: {
                     type: "object",
-                    required: ["user"],
+                    required: ["user", "accessToken"],
                     properties: {
                         user: {
                             type: "object",
@@ -168,7 +168,9 @@ export const swaggerSpec = swaggerJSDoc({
                                 __v: { type: "number", example: 0 },
                             },
                         },
+                        accessToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
                     },
+                    description: "refreshToken được lưu trong cookie (Set-Cookie header), không trả về trong response body",
                 },
                 // User Schemas
                 User: {

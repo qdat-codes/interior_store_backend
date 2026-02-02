@@ -13,6 +13,7 @@ import { errorHandler } from "./middlewares/error.middleware";
 import { responseHanlder } from "./middlewares/response.middleware";
 import { swaggerSpec } from "./swagger";
 import swaggerUi from "swagger-ui-express";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -20,7 +21,11 @@ const app: Application = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.PORT || "http://localhost:3000",
+  credentials: true, // cho phép gửi cookie, 
+}));
+app.use(cookieParser()); // thêm cookie parser vào app
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
