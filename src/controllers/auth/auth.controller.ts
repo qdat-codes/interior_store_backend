@@ -59,10 +59,12 @@ export const authController = {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
 
-      res.status(200).json({
-        accessToken,
-        user,
-      });
+      res.status(200).json(
+        {
+          accessToken,
+          user,
+        }
+      );
     } catch (error) {
       next(error);
     }
@@ -92,7 +94,7 @@ export const authController = {
 
       // xóa refresh token khỏi cookie
       res.clearCookie("refreshToken");
-      
+
       const user = await UserService.logout(token);
       res.status(200).json(user);
     } catch (error) {

@@ -143,13 +143,20 @@ router.get("/search", authMiddleware, UserController.getUserBySearch);
 
 /**
  * @openapi
- * /api/user/me:
+ * /api/user/{id}:
  *   get:
  *     tags: [user]
- *     summary: Lấy thông tin người dùng hiện tại
- *     description: Lấy thông tin của người dùng đang đăng nhập (từ token)
+ *     summary: Lấy thông tin người dùng theo ID
+ *     description: Lấy thông tin chi tiết của một người dùng dựa trên ID
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID của người dùng
  *     responses:
  *       200:
  *         description: Lấy thông tin người dùng thành công
@@ -170,17 +177,24 @@ router.get("/search", authMiddleware, UserController.getUserBySearch);
  *             schema:
  *               $ref: "#/components/schemas/ErrorReponse"
  */
-router.get("/me", authMiddleware, UserController.getUserById);
+router.get("/:id", authMiddleware, UserController.getUserById);
 
 /**
  * @openapi
- * /api/user/me:
+ * /api/user/{id}:
  *   patch:
  *     tags: [user]
  *     summary: Cập nhật thông tin người dùng hiện tại
  *     description: Cập nhật thông tin của người dùng đang đăng nhập
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID của người dùng
  *     requestBody:
  *       required: true
  *       content:
@@ -229,17 +243,24 @@ router.get("/me", authMiddleware, UserController.getUserById);
  *             schema:
  *               $ref: "#/components/schemas/ErrorReponse"
  */
-router.patch("/me", authMiddleware, UserController.updateUser);
+router.patch("/:id", authMiddleware, UserController.updateUser);
 
 /**
  * @openapi
- * /api/user/me:
+ * /api/user/{id}:
  *   delete:
  *     tags: [user]
  *     summary: Xóa tài khoản người dùng hiện tại
  *     description: Xóa tài khoản của người dùng đang đăng nhập
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID của người dùng
  *     responses:
  *       200:
  *         description: Xóa tài khoản thành công
@@ -260,17 +281,24 @@ router.patch("/me", authMiddleware, UserController.updateUser);
  *             schema:
  *               $ref: "#/components/schemas/ErrorReponse"
  */
-router.delete("/me", authMiddleware, UserController.deleteUser);
+router.delete("/:id", authMiddleware, UserController.deleteUser);
 
 /**
  * @openapi
- * /api/user/favorites:
+ * /api/user/{id}/favorites:
  *   get:
  *     tags: [user]
  *     summary: Lấy danh sách sản phẩm yêu thích
  *     description: Lấy danh sách sản phẩm yêu thích của người dùng đang đăng nhập
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID của người dùng
  *     parameters:
  *       - in: query
  *         name: page
@@ -320,11 +348,11 @@ router.delete("/me", authMiddleware, UserController.deleteUser);
  *             schema:
  *               $ref: "#/components/schemas/ErrorReponse"
  */
-router.get("/favorites", authMiddleware, UserController.getAllFavoriteProduct);
+router.get("/:id/favorites", authMiddleware, UserController.getAllFavoriteProduct);
 
 /**
  * @openapi
- * /api/user/favorites/{productId}:
+ * /api/user/{id}/favorites/{productId}:
  *   post:
  *     tags: [user]
  *     summary: Thêm sản phẩm vào danh sách yêu thích
@@ -332,6 +360,12 @@ router.get("/favorites", authMiddleware, UserController.getAllFavoriteProduct);
  *     security:
  *       - bearerAuth: []
  *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID của người dùng
  *       - in: path
  *         name: productId
  *         required: true
@@ -359,17 +393,24 @@ router.get("/favorites", authMiddleware, UserController.getAllFavoriteProduct);
  *             schema:
  *               $ref: "#/components/schemas/ErrorReponse"
  */
-router.post("/favorites/:productId", authMiddleware, UserController.addFavoriteProduct);
+router.post("/:id/favorites/:productId", authMiddleware, UserController.addFavoriteProduct);
 
 /**
  * @openapi
- * /api/user/favorites/{productId}:
+ * /api/user/{id}/favorites/{productId}:
  *   delete:
  *     tags: [user]
  *     summary: Xóa sản phẩm khỏi danh sách yêu thích
  *     description: Xóa sản phẩm khỏi danh sách yêu thích của người dùng đang đăng nhập
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID của người dùng
  *     parameters:
  *       - in: path
  *         name: productId
@@ -398,6 +439,6 @@ router.post("/favorites/:productId", authMiddleware, UserController.addFavoriteP
  *             schema:
  *               $ref: "#/components/schemas/ErrorReponse"
  */
-router.delete("/favorites/:productId", authMiddleware, UserController.removeFavoriteProduct);
+router.delete("/:id/favorites/:productId", authMiddleware, UserController.removeFavoriteProduct);
 
 export default router;
